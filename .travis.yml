@@ -1,0 +1,20 @@
+language: java
+sudo: false
+jdk: openjdk8
+cache:
+  directories:
+    - $HOME/.m2
+    - "frontend/node_modules"
+env:
+  - NODE_VERSION=12
+before_install:
+  - nvm install $NODE_VERSION
+before_script:
+  - mkdir -p src/main/resources/static
+  - cd frontend
+  - npm install
+  - npm run build
+  - cd ..
+  - cp -avr frontend/build/. src/main/resources/static
+install: true
+script: gradle clean build
